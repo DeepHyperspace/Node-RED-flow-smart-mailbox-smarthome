@@ -1,0 +1,266 @@
+[
+    {
+        "id": "3d63d2a1.c95b4e",
+        "type": "inject",
+        "z": "c49d1407.9ad828",
+        "name": "DEBUGGING",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "DEBUGGING",
+        "x": 210,
+        "y": 360,
+        "wires": [
+            [
+                "5d271187.36e13"
+            ]
+        ]
+    },
+    {
+        "id": "76a20dbe.980534",
+        "type": "switch",
+        "z": "c49d1407.9ad828",
+        "name": "Open Event",
+        "property": "payload.state.value",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "OPEN",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "CLOSED",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 580,
+        "y": 360,
+        "wires": [
+            [
+                "7814e094.1904"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "458c2e58.ab15c",
+        "type": "template",
+        "z": "c49d1407.9ad828",
+        "name": "INFO",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "✉ Post im Briefkasten.",
+        "output": "str",
+        "x": 1220,
+        "y": 320,
+        "wires": [
+            [
+                "11695707.cd8dc9"
+            ]
+        ]
+    },
+    {
+        "id": "55a80fe.43403f",
+        "type": "delay",
+        "z": "c49d1407.9ad828",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 1030,
+        "y": 360,
+        "wires": [
+            [
+                "458c2e58.ab15c",
+                "35111632.4e94ba"
+            ]
+        ]
+    },
+    {
+        "id": "9dc87b47.4b9438",
+        "type": "change",
+        "z": "c49d1407.9ad828",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "FrontDoor",
+                "pt": "flow",
+                "to": "payload.state.value",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7814e094.1904",
+        "type": "switch",
+        "z": "c49d1407.9ad828",
+        "name": "Front Door Check",
+        "property": "FrontDoor",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "CLOSED",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 800,
+        "y": 360,
+        "wires": [
+            [
+                "55a80fe.43403f"
+            ]
+        ]
+    },
+    {
+        "id": "a1b8cd43.c8b3c",
+        "type": "inject",
+        "z": "c49d1407.9ad828",
+        "name": "",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 210,
+        "y": 280,
+        "wires": [
+            [
+                "18210f3c.289961"
+            ]
+        ]
+    },
+    {
+        "id": "11695707.cd8dc9",
+        "type": "debug",
+        "z": "c49d1407.9ad828",
+        "name": "TELEGRAM",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 320,
+        "wires": [],
+        "icon": "font-awesome/fa-send"
+    },
+    {
+        "id": "35111632.4e94ba",
+        "type": "debug",
+        "z": "c49d1407.9ad828",
+        "name": "ALEXA",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 400,
+        "wires": [],
+        "icon": "font-awesome/fa-volume-up"
+    },
+    {
+        "id": "18210f3c.289961",
+        "type": "change",
+        "z": "c49d1407.9ad828",
+        "name": "Haustüre",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.state.value",
+                "pt": "msg",
+                "to": "CLOSED",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 280,
+        "wires": [
+            [
+                "9dc87b47.4b9438"
+            ]
+        ],
+        "icon": "font-awesome/fa-lock"
+    },
+    {
+        "id": "5d271187.36e13",
+        "type": "change",
+        "z": "c49d1407.9ad828",
+        "name": "BRIEFKASTEN",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.state.value",
+                "pt": "msg",
+                "to": "OPEN",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 360,
+        "wires": [
+            [
+                "76a20dbe.980534"
+            ]
+        ],
+        "icon": "node-red/envelope.svg"
+    }
+]
